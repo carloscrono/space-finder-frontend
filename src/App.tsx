@@ -1,14 +1,17 @@
+import './App.css'
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import { useState } from 'react';
 import LoginComponent from './components/LoginComponent';
 import { AuthService } from './services/AuthService';
+import { DataService } from './services/DataService';
+import CreateSpace from './components/spaces/CreateSpace';
+import Spaces from './components/spaces/Spaces';
 
 const authService = new AuthService();
-import './App.css'
+const dataService = new DataService(authService);
 
 function App() {
-
   const [userName, setUserName] = useState<string | undefined>(undefined);
 
   const router = createBrowserRouter([
@@ -34,22 +37,20 @@ function App() {
         },
         {
           path: "/createSpace",
-          element: <div>Create space page</div>,
+          element: <CreateSpace dataService={dataService}/>,
         },
         {
           path: "/spaces",
-          element: <div>Spaces page </div>,
+          element: <Spaces dataService={dataService}/>,
         },
       ]
     },
   ]);
 
   return (
-    <>
-      <div className="wrapper">
-        <RouterProvider router={router} />
-      </div>
-    </>
+    <div className="wrapper">
+      <RouterProvider router={router} />
+    </div>
   )
 }
 
